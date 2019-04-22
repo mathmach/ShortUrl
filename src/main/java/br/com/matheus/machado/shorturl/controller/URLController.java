@@ -37,7 +37,7 @@ public class URLController {
     @Autowired
     HttpServletResponse response;
 
-    @GetMapping(value = "/{alias}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/r/{alias}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO<UrlDTO>> findByAlias(@PathVariable final String alias) {
         LOGGER.info("Find short url by alias: " + alias);
         final ResponseDTO<UrlDTO> res = new ResponseDTO<>(new ArrayList<>());
@@ -67,10 +67,10 @@ public class URLController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @PostMapping(value = "/shortener", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO<UrlDTO>> shortenUrl(@RequestBody @Valid final UrlDTO dto) {
+    @PostMapping(value = "/api/v2/shortener", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO<String>> shortenUrl(@RequestBody @Valid final UrlDTO dto) {
         LOGGER.info("Generating short url of: " + dto.getUrl());
-        final ResponseDTO<UrlDTO> res = new ResponseDTO<>(new ArrayList<>());
+        final ResponseDTO<String> res = new ResponseDTO<>(new ArrayList<>());
         try {
             service.findByAlias(dto.getAlias()).ifPresentOrElse((Url url) -> {
                 res.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -79,7 +79,7 @@ public class URLController {
             }, () -> {
                 Url url = service.save(UrlDTOConverter.convertToEntity(dto));
                 res.setStatus(HttpStatus.OK.value());
-                res.setData(UrlDTOConverter.convertToDTO(url));
+                res.setData(request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath()) + "/r/" + url.getAlias());
             });
         } catch (Exception e) {
             res.setStatus(HttpStatus.BAD_REQUEST.value());

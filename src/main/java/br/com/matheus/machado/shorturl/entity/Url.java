@@ -1,6 +1,5 @@
 package br.com.matheus.machado.shorturl.entity;
 
-import br.com.matheus.machado.shorturl.validation.UrlValidation;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -11,7 +10,9 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,12 +32,14 @@ public class Url implements Serializable {
     private Long id;
     @Basic(optional = false)
     @NotNull
+    @NotEmpty(message = "Field alias is required")
     @Size(min = 1, max = 255)
     private String alias;
-    @UrlValidation
     @Basic(optional = false)
     @NotNull
     @Lob
+    @NotEmpty(message = "Field url is required")
+    @Pattern(regexp = "(ftp|http|https):\\/\\/(\\w+:{0,1}\\w*@)?(\\S+)(:[0-9]+)?(\\/|\\/([\\w#!:.?+=&%@!\\-\\/]))?", message = "Invalid URL")
     @Size(min = 1, max = 65535)
     private String url;
 
