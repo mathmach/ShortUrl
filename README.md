@@ -18,9 +18,9 @@ A aplicação utiliza a porta :8080 para seu funcionamento.
 
 ### Endpoints
 
-    * /api/v2/shortener // API para criação de URL's encurtadas
-    * /swagger-ui.html  // Documentação gerada automáticamente para realização de testes com a API
-    * /r/{alias}        // Redirecionamento para URL encurtada, onde {alias} é a identificação cadastrada pelo usuário
+  * **/api/v2/shortener** // API para criação de URL's encurtadas
+  * **/swagger-ui.html**  // Documentação gerada automáticamente para realização de testes com a API
+  * **/r/{alias}**        // Redirecionamento para URL encurtada, onde {alias} é a identificação cadastrada pelo usuário
 
 ### Testando a API
 
@@ -33,9 +33,9 @@ Corpo da mensagem a ser enviada ao endpoint '/api/v2/shortener' utilizando Beare
 **OBS:** Por não ter uma persistência para os tokens, qualquer valor utilizado será autorizado
 
 ```
-{
-    "alias": string,  // Campo de identificação única para uma URL personalizada;
-    "url" : string    // URL (Válida) na qual a aplicação irá redirecionar
+{ 
+  "alias": string,  // Campo de identificação única para uma URL personalizada;
+  "url" : string    // URL (Válida) na qual a aplicação irá redirecionar
 }
 ```
 
@@ -45,11 +45,11 @@ Corpo da mensagem de resposta do servidor:
 
 ```
 {
-    "timestamp": long,
-    "status": int,
-    "data": string, // URL encurtada
-    "error": string,
-    "errors": array
+  "timestamp": long,
+  "status": int,
+  "data": string, // URL encurtada
+  "error": string,
+  "errors": array
 }
 ```
 
